@@ -1,0 +1,22 @@
+[tool.poetry]
+name = "coursework-7"
+version = "0.1.0"
+description = ""
+authors = ["Ильдар Галеев <ildar-galeev92@mail.ru>"]
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "^3.11"
+django = "4.2.7"
+pytelegrambotapi = "^4.16.1"
+environs = {extras = ["django"], version = "^10.0.0"}
+djangorestframework = "^3.14.0"
+djangorestframework-simplejwt = "^5.3.1"
+
+
+[tool.poetry.group.dev.dependencies]
+ipython = "^8.22.2"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
