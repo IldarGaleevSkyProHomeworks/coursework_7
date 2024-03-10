@@ -12,9 +12,11 @@ def get_text_messages(message):
     bot.send_message(message.from_user.id, "Hello")
 
 
-def process_webhook(updates_json: dict):
-    update = telebot.types.Update.de_json(updates_json)
-    bot.process_new_updates([update])
+def start_poll():
+    bot.infinity_polling(
+        logger_level=logging.INFO,
+        long_polling_timeout=settings.TELEGRAM_POLL_INTERVAL,
+    )
 
 
 def init_webhook(delete=False):
@@ -31,3 +33,8 @@ def init_webhook(delete=False):
                         f'{reverse_lazy("telegram-bot:telegram-webhook")}')
 
     logging.info('Telegram bot ready')
+
+
+def process_webhook(updates_json: dict):
+    update = telebot.types.Update.de_json(updates_json)
+    bot.process_new_updates([update])
