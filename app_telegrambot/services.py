@@ -3,13 +3,25 @@ import logging
 import telebot
 from django.conf import settings
 from django.urls import reverse_lazy
+from telebot.custom_filters import StateFilter
+from telebot.types import Message
+from app_telegrambot.bot_commands import link_command, start_command
 
 bot = telebot.TeleBot(settings.TELEGRAM_BOT_TOKEN)
+bot.add_custom_filter(StateFilter(bot))
 
+link_command.init_cmd(bot)
+start_command.init_cmd(bot)
 
-@bot.message_handler(content_types=['text'])
-def get_text_messages(message):
-    bot.send_message(message.from_user.id, "Hello")
+if settings.DEBUG:
+    @bot.message_handler(content_types=['text'])
+    def echo_messages(message: Message):
+        uid = message.from_user.id
+        bot.send_message(
+            uid,
+            parse_mode='html',
+            text=f'echo: {message.text}'
+        )
 
 
 def start_poll():
