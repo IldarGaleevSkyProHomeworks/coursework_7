@@ -12,6 +12,7 @@ https://docs.djangoproject.com/en/4.2/ref/settings/
 from datetime import timedelta
 from pathlib import Path
 
+from django.urls import reverse_lazy
 from environs import Env
 
 env = Env()
@@ -71,7 +72,9 @@ ROOT_URLCONF = "config.urls"
 TEMPLATES = [
     {
         "BACKEND": "django.template.backends.django.DjangoTemplates",
-        "DIRS": [],
+        "DIRS": [
+            BASE_DIR / "templates"
+        ],
         "APP_DIRS": True,
         "OPTIONS": {
             "context_processors": [
@@ -163,4 +166,4 @@ TELEGRAM_POLL_INTERVAL = env.int('TELEGRAM_POLL_INTERVAL', 10)
 #         'schedule': timedelta(seconds=TELEGRAM_POLL_INTERVAL),
 #     }
 
-
+LOGOUT_REDIRECT_URL = reverse_lazy('login')
