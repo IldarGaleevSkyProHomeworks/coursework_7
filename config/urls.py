@@ -23,4 +23,5 @@ urlpatterns = [
     path('accounts/logout/', LogoutView.as_view(), name='logout'),
     path('accounts/login/', LoginView.as_view(), name='login'),
     path("telegram/", include("app_telegrambot.urls", namespace="telegram-bot")),
+    path("socialauth/", include("app_social_auth.urls", namespace="social-auth")),
 ]

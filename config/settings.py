@@ -45,6 +45,7 @@ INSTALLED_APPS = [
 
     "app_habits",
     "app_telegrambot",
+    "app_social_auth",
 ]
 
 MIDDLEWARE = [
@@ -56,6 +57,8 @@ MIDDLEWARE = [
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
 ]
+
+SECURE_CROSS_ORIGIN_OPENER_POLICY = "same-origin-allow-popups"
 
 REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': (
@@ -166,4 +169,7 @@ TELEGRAM_POLL_INTERVAL = env.int('TELEGRAM_POLL_INTERVAL', 10)
 #         'schedule': timedelta(seconds=TELEGRAM_POLL_INTERVAL),
 #     }
 
+MAX_OAUTH_TIMEOUT = env.int('MAX_OAUTH_TIMEOUT', 86400)
+
 LOGOUT_REDIRECT_URL = reverse_lazy('login')
+LOGIN_REDIRECT_URL = '/'
