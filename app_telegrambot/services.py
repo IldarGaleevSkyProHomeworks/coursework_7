@@ -58,8 +58,10 @@ def init_webhook(delete=False):
     if not settings.TELEGRAM_USE_POLL and settings.APPLICATION_HOSTNAME:
         bot.set_webhook(f'{settings.APPLICATION_SCHEME}://{settings.APPLICATION_HOSTNAME}'
                         f'{reverse_lazy("telegram-bot:telegram-webhook")}')
+        logging.info('Telegram bot ready')
+        return
 
-    logging.info('Telegram bot ready')
+    logging.warning('App in poll-mode!')
 
 
 def process_webhook(updates_json: dict):
