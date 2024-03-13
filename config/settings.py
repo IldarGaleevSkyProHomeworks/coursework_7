@@ -44,6 +44,7 @@ INSTALLED_APPS = [
     "django.contrib.staticfiles",
     "django_celery_beat",
     "rest_framework",
+    "django_filters",
 
     "app_habits",
     "app_telegrambot",
@@ -69,7 +70,10 @@ REST_FRAMEWORK = {
     ),
     'DEFAULT_PERMISSION_CLASSES': [
         'rest_framework.permissions.IsAuthenticated',
-    ]
+    ],
+    'DEFAULT_FILTER_BACKENDS': (
+
+    )
 }
 
 ROOT_URLCONF = "config.urls"
@@ -153,7 +157,6 @@ if APPLICATION_HOSTNAME:
 
 TELEGRAM_USE_POLL = env.bool('TELEGRAM_USE_POLL', False)
 TELEGRAM_BOT_TOKEN = env.str('TELEGRAM_BOT_TOKEN')
-
 
 CELERY_TIMEZONE = TIME_ZONE
 
