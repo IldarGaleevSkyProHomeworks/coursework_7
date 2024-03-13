@@ -3,9 +3,12 @@ import logging
 import telebot
 from django.conf import settings
 from django.urls import reverse_lazy
+from rest_framework.exceptions import NotFound
 from telebot.custom_filters import StateFilter
 from telebot.types import Message
 from app_telegrambot.bot_commands import link_command, start_command
+from app_telegrambot.models import TelegramUser
+from telebot.formatting import escape_markdown
 
 bot = telebot.TeleBot(settings.TELEGRAM_BOT_TOKEN)
 bot.add_custom_filter(StateFilter(bot))
@@ -22,6 +25,18 @@ if settings.DEBUG:
             parse_mode='html',
             text=f'echo: {message.text}'
         )
+
+
+def send_text_message(user_id, md_text):
+    user: TelegramUser = TelegramUser.objects.filter(user_id=user_id).first()
+    if user is None:
+        raise NotFound('User not found')
+
+    bot.send_message(
+        chat_id=user.telegram_user_id,
+        parse_mode='MarkdownV2',
+        text=escape_markdown(md_text)
+    )
 
 
 def start_poll():
