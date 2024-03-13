@@ -4,9 +4,10 @@ from rest_framework import viewsets
 from rest_framework.filters import OrderingFilter, SearchFilter
 from rest_framework.permissions import IsAuthenticated
 
-from app_habits.models import Habit
+from app_habits.models import Habit, HabitNotification
 from app_habits.pagination import AppHabitPagination
 from app_habits.serializers import HabitFullSerializer, HabitPublicSerializer
+from app_habits.serializers.habit_notification_serializer import HabitNotificationSerializer
 
 
 class HabitViewSet(viewsets.ModelViewSet):
@@ -28,3 +29,17 @@ class HabitViewSet(viewsets.ModelViewSet):
         if self.request.user.is_superuser:
             return HabitFullSerializer
         return HabitPublicSerializer
+
+
+class HabitNotificationViewSet(viewsets.ModelViewSet):
+    serializer_class = HabitNotificationSerializer
+    permission_classes = [IsAuthenticated]
+
+    def get_queryset(self):
+        if self.request.user.is_superuser:
+            return HabitNotification.objects.all()
+        return HabitNotification.objects.filter(owner=self.request.user)
+
+    filter_backends = (SearchFilter,)
+    search_fields = ('description',)
+    pagination_class = AppHabitPagination
