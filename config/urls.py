@@ -19,9 +19,11 @@ from django.contrib.auth.views import LogoutView, LoginView
 from django.urls import path, include
 
 urlpatterns = [
+
     path("admin/", admin.site.urls),
     path('accounts/logout/', LogoutView.as_view(), name='logout'),
     path('accounts/login/', LoginView.as_view(), name='login'),
     path("telegram/", include("app_telegrambot.urls", namespace="telegram-bot")),
     path("socialauth/", include("app_social_auth.urls", namespace="social-auth")),
+    path("api/", include("app_habits.urls", namespace="api")),
 ]

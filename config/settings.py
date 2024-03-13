@@ -31,6 +31,7 @@ SECRET_KEY = "django-insecure-1y&&k$ibx!x6^jlgdo2g(wtcy%!x^t3hjor@^%7!6cz8c5t@vv
 DEBUG = True
 
 ALLOWED_HOSTS = env.list('ALLOWED_HOSTS', [])
+CSRF_TRUSTED_ORIGINS = env.list('CSRF_TRUSTED_ORIGINS', [])
 
 # Application definition
 
@@ -42,6 +43,7 @@ INSTALLED_APPS = [
     "django.contrib.messages",
     "django.contrib.staticfiles",
     "django_celery_beat",
+    "rest_framework",
 
     "app_habits",
     "app_telegrambot",
@@ -147,6 +149,7 @@ APPLICATION_SCHEME = env.str('APPLICATION_SCHEME', 'https')
 APPLICATION_HOSTNAME = env.str('APPLICATION_HOSTNAME', 'localhost')
 if APPLICATION_HOSTNAME:
     ALLOWED_HOSTS.append(APPLICATION_HOSTNAME)
+    CSRF_TRUSTED_ORIGINS.append(f'{APPLICATION_SCHEME}://{APPLICATION_HOSTNAME}')
 
 TELEGRAM_USE_POLL = env.bool('TELEGRAM_USE_POLL', False)
 TELEGRAM_BOT_TOKEN = env.str('TELEGRAM_BOT_TOKEN')
