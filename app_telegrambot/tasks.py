@@ -5,7 +5,10 @@ from app_telegrambot import services
 
 @shared_task
 def send_telegram_message(user_id: int, md_text: str):
-    services.send_text_message(user_id, md_text)
+    services.send_text_message(
+        user_id=user_id,
+        md_text=md_text
+    )
 
 
 @shared_task

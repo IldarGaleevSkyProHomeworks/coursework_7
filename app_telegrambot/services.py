@@ -9,6 +9,7 @@ from telebot.types import Message
 from app_telegrambot.bot_commands import link_command, start_command, cancel_command
 from app_telegrambot.models import TelegramUser
 from telebot.formatting import escape_markdown
+from telebot.util import antiflood
 
 bot = telebot.TeleBot(settings.TELEGRAM_BOT_TOKEN)
 bot.add_custom_filter(StateFilter(bot))
@@ -34,13 +35,16 @@ if settings.DEBUG:
         )
 
 
-def send_text_message(user_id, md_text):
-    user: TelegramUser = TelegramUser.objects.filter(user_id=user_id).first()
-    if user is None:
-        raise NotFound('User not found')
+def send_text_message(user_id=None, telegram_uid=None, md_text=None):
+    if telegram_uid is None:
+        user: TelegramUser = TelegramUser.objects.filter(user_id=user_id).first()
+        if user is None:
+            raise NotFound('User not found')
+        telegram_uid = user.telegram_user_id
 
-    bot.send_message(
-        chat_id=user.telegram_user_id,
+    antiflood(
+        bot.send_message,
+        chat_id=telegram_uid,
         parse_mode='MarkdownV2',
         text=escape_markdown(md_text)
     )
