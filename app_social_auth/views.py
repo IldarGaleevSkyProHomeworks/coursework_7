@@ -27,6 +27,7 @@ def telegram_login(request):
                 user_id=user.user.id,
                 md_text='Вы вошли в аккаунт'
             )
+            return redirect(settings.LOGIN_REDIRECT_URL)
 
         password = User.objects.make_random_password()
         new_user: User = User.objects.create_user(
