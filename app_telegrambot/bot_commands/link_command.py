@@ -79,6 +79,11 @@ def init_cmd(bot: telebot.TeleBot):
             message_id=message.id
         )
 
+        bot.delete_state(
+            user_id=uid,
+            chat_id=cid
+        )
+
         user: User = User.objects.filter(username=login).first()
 
         if not (user and check_password(password, user.password)):
