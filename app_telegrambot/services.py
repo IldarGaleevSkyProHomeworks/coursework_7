@@ -13,8 +13,14 @@ from telebot.formatting import escape_markdown
 bot = telebot.TeleBot(settings.TELEGRAM_BOT_TOKEN)
 bot.add_custom_filter(StateFilter(bot))
 
-link_command.init_cmd(bot)
-start_command.init_cmd(bot)
+commands = [
+    link_command.init_cmd(bot),
+    start_command.init_cmd(bot)
+]
+
+bot.set_my_commands(
+    commands=commands
+)
 
 if settings.DEBUG:
     @bot.message_handler(content_types=['text'])

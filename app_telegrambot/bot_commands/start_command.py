@@ -1,6 +1,6 @@
 import telebot
 from telebot.formatting import escape_markdown
-from telebot.types import Message
+from telebot.types import Message, BotCommand
 
 from app_telegrambot.models import TelegramUser
 
@@ -28,3 +28,8 @@ def init_cmd(bot: telebot.TeleBot):
                                      "- /create - чтобы создать новый аккаунт\n"
                                      )
             )
+
+    return BotCommand(
+        command='start',
+        description='Начало работы с ботом'
+    )
