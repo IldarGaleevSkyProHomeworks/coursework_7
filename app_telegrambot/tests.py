@@ -13,7 +13,7 @@ class MessageTextTestCase(TestCase):
     @override_settings(APPLICATION_SCHEME='https')
     def test_message_welcome(self):
         msg = message_text.message_welcome()
-        self.assertEqual(msg, "Вы зарегистрировались на сайте [example.com](https://example.com)")
+        self.assertEqual(msg, r"Вы зарегистрировались на сайте [example\.com](https://example\.com)")
 
     def test_message_user_credentials(self):
         msg = message_text.message_user_credentials('user1', 'pass')

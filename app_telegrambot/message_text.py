@@ -1,14 +1,15 @@
 from django.conf import settings
-
+from telebot.formatting import escape_markdown
 
 def stack(*args):
     return '\n'.join(args)
 
 
 def message_welcome() -> str:
+    url = escape_markdown(f'{settings.APPLICATION_SCHEME}://{settings.APPLICATION_HOSTNAME}')
     return (f"Вы зарегистрировались на сайте "
-            f"[{settings.APPLICATION_HOSTNAME}]"
-            f"({settings.APPLICATION_SCHEME}://{settings.APPLICATION_HOSTNAME})")
+            f"[{escape_markdown(settings.APPLICATION_HOSTNAME)}]"
+            f"({url})")
 
 
 def message_user_credentials(username, password) -> str:

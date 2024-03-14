@@ -44,6 +44,8 @@ def telegram_login(request):
             telegram_user_id=int(data['id'])
         )
 
+        login(request, new_user)
+
         tasks.send_telegram_message.delay(
             user_id=new_user.id,
             md_text=message_text.stack(
