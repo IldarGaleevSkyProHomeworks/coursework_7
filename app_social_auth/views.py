@@ -9,7 +9,7 @@ from rest_framework.decorators import api_view, permission_classes
 from rest_framework.permissions import AllowAny
 
 from app_social_auth.utils import check_telegram_data
-from app_telegrambot import tasks
+from app_telegrambot import tasks, message_text
 from app_telegrambot.models import TelegramUser
 
 logger = logging.getLogger(__name__)
@@ -25,7 +25,7 @@ def telegram_login(request):
             login(request, user.user)
             tasks.send_telegram_message.delay(
                 user_id=user.user.id,
-                md_text='Вы вошли в аккаунт'
+                md_text=message_text.message_login()
             )
             return redirect(settings.LOGIN_REDIRECT_URL)
 
@@ -46,12 +46,10 @@ def telegram_login(request):
 
         tasks.send_telegram_message.delay(
             user_id=new_user.id,
-            md_text=f"Вы зарегистрировались на сайте "
-                    f"[{settings.APPLICATION_HOSTNAME}]"
-                    f"({settings.APPLICATION_SCHEME}://{settings.APPLICATION_HOSTNAME})\n"
-                    f"Для входа используйте:\n"
-                    f"Логин: `{new_user.username}`\n"
-                    f"Пароль: ||{password}||"
+            md_text=message_text.stack(
+                message_text.message_welcome(),
+                message_text.message_user_credentials(username=new_user.username, password=password)
+            )
         )
 
         return redirect(settings.LOGIN_REDIRECT_URL)

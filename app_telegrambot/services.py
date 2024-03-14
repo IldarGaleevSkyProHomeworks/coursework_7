@@ -46,7 +46,7 @@ def send_text_message(user_id=None, telegram_uid=None, md_text=None):
         bot.send_message,
         chat_id=telegram_uid,
         parse_mode='MarkdownV2',
-        text=escape_markdown(md_text)
+        text=md_text
     )
 
 
