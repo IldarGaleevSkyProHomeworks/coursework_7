@@ -5,6 +5,7 @@ from django.contrib.auth import login
 from django.contrib.auth.models import User
 from django.shortcuts import redirect
 from django.urls import reverse_lazy
+from drf_yasg.utils import swagger_auto_schema
 from rest_framework.decorators import api_view, permission_classes
 from rest_framework.permissions import AllowAny
 
@@ -15,6 +16,7 @@ from app_telegrambot.models import TelegramUser
 logger = logging.getLogger(__name__)
 
 
+@swagger_auto_schema(method='get', auto_schema=None)
 @api_view(['GET'])
 @permission_classes([AllowAny])
 def telegram_login(request):

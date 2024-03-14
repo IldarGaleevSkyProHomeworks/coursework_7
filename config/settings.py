@@ -45,6 +45,7 @@ INSTALLED_APPS = [
     "django_celery_beat",
     "rest_framework",
     "django_filters",
+    "drf_yasg",
 
     "app_habits",
     "app_telegrambot",
@@ -74,6 +75,18 @@ REST_FRAMEWORK = {
     'DEFAULT_FILTER_BACKENDS': (
 
     )
+}
+
+SWAGGER_SETTINGS = {
+    'USE_SESSION_AUTH': True,
+    'SECURITY_DEFINITIONS': {
+        'JWT': {
+            'description': 'Bearer <token>',
+            'type': 'apiKey',
+            'name': 'Authorization',
+            'in': 'header',
+        },
+    }
 }
 
 ROOT_URLCONF = "config.urls"

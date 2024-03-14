@@ -18,6 +18,7 @@ redis = "^5.0.3"
 django-celery-beat = "^2.6.0"
 django-filter = "^24.1"
 django-timezone-field = "^6.1.0"
+drf-yasg = "^1.21.7"
 
 
 [tool.poetry.group.dev.dependencies]
