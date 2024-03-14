@@ -10,7 +10,7 @@ from app_habits.tasks import send_habit_notifications
 from app_telegrambot.models import TelegramUser
 
 
-class SimpleTest(TestCase):
+class HabitNotificationTestCase(TestCase):
 
     def setUp(self):
         user_1 = User.objects.create_user(username='User1', password='123')
