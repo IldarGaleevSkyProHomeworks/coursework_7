@@ -31,8 +31,11 @@ SECRET_KEY = "django-insecure-1y&&k$ibx!x6^jlgdo2g(wtcy%!x^t3hjor@^%7!6cz8c5t@vv
 DEBUG = True
 
 ALLOWED_HOSTS = env.list('ALLOWED_HOSTS', [])
+CORS_ALLOWED_ORIGINS = env.list('CORS_ALLOWED_ORIGINS', [])
 CSRF_TRUSTED_ORIGINS = env.list('CSRF_TRUSTED_ORIGINS', [])
 
+CORS_ALLOW_ALL_ORIGINS = False
+SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
 # Application definition
 
 INSTALLED_APPS = [
@@ -46,6 +49,7 @@ INSTALLED_APPS = [
     "rest_framework",
     "django_filters",
     "drf_yasg",
+    "corsheaders",
 
     "app_habits",
     "app_telegrambot",
@@ -55,6 +59,7 @@ INSTALLED_APPS = [
 MIDDLEWARE = [
     "django.middleware.security.SecurityMiddleware",
     "django.contrib.sessions.middleware.SessionMiddleware",
+    "corsheaders.middleware.CorsMiddleware",
     "django.middleware.common.CommonMiddleware",
     "django.middleware.csrf.CsrfViewMiddleware",
     "django.contrib.auth.middleware.AuthenticationMiddleware",
@@ -166,6 +171,7 @@ APPLICATION_SCHEME = env.str('APPLICATION_SCHEME', 'https')
 APPLICATION_HOSTNAME = env.str('APPLICATION_HOSTNAME', 'localhost')
 if APPLICATION_HOSTNAME:
     ALLOWED_HOSTS.append(APPLICATION_HOSTNAME)
+    CORS_ALLOWED_ORIGINS.append(f'{APPLICATION_SCHEME}://{APPLICATION_HOSTNAME}')
     CSRF_TRUSTED_ORIGINS.append(f'{APPLICATION_SCHEME}://{APPLICATION_HOSTNAME}')
 
 TELEGRAM_USE_POLL = env.bool('TELEGRAM_USE_POLL', False)
