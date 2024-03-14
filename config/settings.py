@@ -54,6 +54,7 @@ INSTALLED_APPS = [
     "app_habits",
     "app_telegrambot",
     "app_social_auth",
+    "app_accounts",
 ]
 
 MIDDLEWARE = [
@@ -79,7 +80,9 @@ REST_FRAMEWORK = {
     ],
     'DEFAULT_FILTER_BACKENDS': (
 
-    )
+    ),
+    'UNAUTHENTICATED_USER': None,
+    'UNAUTHENTICATED_TOKEN': None,
 }
 
 SWAGGER_SETTINGS = {
