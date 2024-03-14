@@ -6,7 +6,8 @@ from app_habits.models import Habit
 
 class HabitFullSerializer(serializers.ModelSerializer):
     linked_habit = serializers.PrimaryKeyRelatedField(
-        allow_null=True,
+        allow_empty=True,
+        required=False,
         queryset=Habit.objects.filter(is_pleasantly=True)
     )
 
@@ -25,3 +26,8 @@ class HabitPublicSerializer(HabitFullSerializer):
     class Meta:
         model = Habit
         exclude = ['owner']
+
+        swagger_schema_fields = {
+            'title': 'HabitItem',
+            'description': 'Объект "Привычка"',
+        }

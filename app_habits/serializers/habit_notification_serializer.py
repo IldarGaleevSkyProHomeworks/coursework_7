@@ -25,3 +25,8 @@ class HabitNotificationSerializer(serializers.ModelSerializer):
     class Meta:
         model = HabitNotification
         exclude = ['owner']
+
+        swagger_schema_fields = {
+            'title': 'GoalItem',
+            'description': 'Объект "Конечная цель"'
+        }
