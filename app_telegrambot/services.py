@@ -6,10 +6,16 @@ from django.urls import reverse_lazy
 from rest_framework.exceptions import NotFound
 from telebot.custom_filters import StateFilter
 from telebot.types import Message
-from app_telegrambot.bot_commands import link_command, start_command, cancel_command
-from app_telegrambot.models import TelegramUser
-from telebot.formatting import escape_markdown
 from telebot.util import antiflood
+
+from app_telegrambot.bot_commands import (
+    link_command,
+    start_command,
+    cancel_command,
+    getjwt_command,
+    genpass_command,
+)
+from app_telegrambot.models import TelegramUser
 
 bot = telebot.TeleBot(settings.TELEGRAM_BOT_TOKEN)
 bot.add_custom_filter(StateFilter(bot))
@@ -17,7 +23,9 @@ bot.add_custom_filter(StateFilter(bot))
 commands = [
     cancel_command.init_cmd(bot),
     link_command.init_cmd(bot),
-    start_command.init_cmd(bot)
+    start_command.init_cmd(bot),
+    getjwt_command.init_cmd(bot),
+    genpass_command.init_cmd(bot),
 ]
 
 bot.set_my_commands(

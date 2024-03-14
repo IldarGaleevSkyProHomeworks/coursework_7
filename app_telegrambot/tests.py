@@ -18,3 +18,7 @@ class MessageTextTestCase(TestCase):
     def test_message_user_credentials(self):
         msg = message_text.message_user_credentials('user1', 'pass')
         self.assertEqual(msg, "Для входа используйте:\n>Логин: `user1`\n>Пароль: ||pass||")
+
+    def test_message_jw_token_info(self):
+        msg = message_text.message_jw_token_info('ACCESS', 'REFRESH')
+        self.assertEqual(msg, 'Ваш токен:\n```json\n{\n"refresh":"REFRESH",\n"access":"ACCESS"\n}\n```')
