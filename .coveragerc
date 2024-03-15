@@ -1,0 +1,19 @@
+[run]
+branch = True
+source = .
+
+omit =
+   manage.py
+   config/*
+   */migrations/*
+   */models/*
+   app_telegrambot/bot_commands/*
+   */__init__.py
+   */admin.py
+   */apps.py
+   */urls.py
+   */tests/*
+   */tests.py
+
+[report]
+show_missing = True

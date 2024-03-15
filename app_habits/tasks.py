@@ -7,7 +7,7 @@ from app_habits.models import HabitNotification
 from app_telegrambot import services
 
 
-def get_now():
+def get_now():  # pragma: no cover
     return datetime.now(timezone.utc)
 
 
