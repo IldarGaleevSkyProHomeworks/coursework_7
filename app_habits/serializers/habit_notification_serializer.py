@@ -2,7 +2,7 @@ from django.contrib.auth.models import User
 from rest_framework import serializers
 from timezone_field.rest_framework import TimeZoneSerializerField
 
-from app_habits.models import HabitNotification
+from app_habits.models import HabitNotification, Habit
 from app_habits.serializers import HabitPublicSerializer
 
 
@@ -12,9 +12,14 @@ class HabitNotificationSerializer(serializers.ModelSerializer):
         use_pytz=False,
     )
 
-    habits = HabitPublicSerializer(
+    # habits = HabitPublicSerializer(
+    #     many=True,
+    #     required=True,
+    # )
+    habits = serializers.PrimaryKeyRelatedField(
         many=True,
         required=True,
+        queryset=Habit.objects.all()
     )
 
     def create(self, validated_data):
