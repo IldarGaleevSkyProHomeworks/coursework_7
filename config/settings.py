@@ -12,6 +12,7 @@ https://docs.djangoproject.com/en/4.2/ref/settings/
 from datetime import timedelta
 from pathlib import Path
 
+from django.urls import reverse_lazy
 from environs import Env
 
 env = Env()
@@ -27,10 +28,14 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = "django-insecure-1y&&k$ibx!x6^jlgdo2g(wtcy%!x^t3hjor@^%7!6cz8c5t@vv"
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = env.bool('DEBUG', False)
 
 ALLOWED_HOSTS = env.list('ALLOWED_HOSTS', [])
+CORS_ALLOWED_ORIGINS = env.list('CORS_ALLOWED_ORIGINS', [])
+CSRF_TRUSTED_ORIGINS = env.list('CSRF_TRUSTED_ORIGINS', [])
 
+CORS_ALLOW_ALL_ORIGINS = False
+SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
 # Application definition
 
 INSTALLED_APPS = [
@@ -41,20 +46,29 @@ INSTALLED_APPS = [
     "django.contrib.messages",
     "django.contrib.staticfiles",
     "django_celery_beat",
+    "rest_framework",
+    "django_filters",
+    "drf_yasg",
+    "corsheaders",
 
     "app_habits",
     "app_telegrambot",
+    "app_social_auth",
+    "app_accounts",
 ]
 
 MIDDLEWARE = [
     "django.middleware.security.SecurityMiddleware",
     "django.contrib.sessions.middleware.SessionMiddleware",
+    "corsheaders.middleware.CorsMiddleware",
     "django.middleware.common.CommonMiddleware",
     "django.middleware.csrf.CsrfViewMiddleware",
     "django.contrib.auth.middleware.AuthenticationMiddleware",
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
 ]
+
+SECURE_CROSS_ORIGIN_OPENER_POLICY = "same-origin-allow-popups"
 
 REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': (
@@ -63,7 +77,24 @@ REST_FRAMEWORK = {
     ),
     'DEFAULT_PERMISSION_CLASSES': [
         'rest_framework.permissions.IsAuthenticated',
-    ]
+    ],
+    'DEFAULT_FILTER_BACKENDS': (
+
+    ),
+    'UNAUTHENTICATED_USER': None,
+    'UNAUTHENTICATED_TOKEN': None,
+}
+
+SWAGGER_SETTINGS = {
+    'USE_SESSION_AUTH': True,
+    'SECURITY_DEFINITIONS': {
+        'JWT': {
+            'description': 'Bearer <token>',
+            'type': 'apiKey',
+            'name': 'Authorization',
+            'in': 'header',
+        },
+    }
 }
 
 ROOT_URLCONF = "config.urls"
@@ -71,7 +102,9 @@ ROOT_URLCONF = "config.urls"
 TEMPLATES = [
     {
         "BACKEND": "django.template.backends.django.DjangoTemplates",
-        "DIRS": [],
+        "DIRS": [
+            BASE_DIR / "templates"
+        ],
         "APP_DIRS": True,
         "OPTIONS": {
             "context_processors": [
@@ -90,9 +123,13 @@ WSGI_APPLICATION = "config.wsgi.application"
 # https://docs.djangoproject.com/en/4.2/ref/settings/#databases
 
 DATABASES = {
-    "default": {
-        "ENGINE": "django.db.backends.sqlite3",
-        "NAME": BASE_DIR / "db.sqlite3",
+    'default': {
+        "ENGINE": env.str("DB_ENGINE", "django.db.backends.postgresql_psycopg2"),
+        "NAME": env.str("DB_NAME", "coursework_7"),
+        "USER": env.str("DB_USER", "postgres"),
+        "PASSWORD": env.str("DB_PASSWORD", ""),
+        "HOST": env.str("DB_HOST", "localhost"),
+        "PORT": env.int("DB_PORT", 5432),
     }
 }
 
@@ -141,10 +178,11 @@ APPLICATION_SCHEME = env.str('APPLICATION_SCHEME', 'https')
 APPLICATION_HOSTNAME = env.str('APPLICATION_HOSTNAME', 'localhost')
 if APPLICATION_HOSTNAME:
     ALLOWED_HOSTS.append(APPLICATION_HOSTNAME)
+    CORS_ALLOWED_ORIGINS.append(f'{APPLICATION_SCHEME}://{APPLICATION_HOSTNAME}')
+    CSRF_TRUSTED_ORIGINS.append(f'{APPLICATION_SCHEME}://{APPLICATION_HOSTNAME}')
 
 TELEGRAM_USE_POLL = env.bool('TELEGRAM_USE_POLL', False)
 TELEGRAM_BOT_TOKEN = env.str('TELEGRAM_BOT_TOKEN')
-
 
 CELERY_TIMEZONE = TIME_ZONE
 
@@ -154,7 +192,15 @@ CELERY_TASK_TIME_LIMIT = env.int('CELERY_TASK_TIME_LIMIT', 60 * 30)
 CELERY_BROKER_URL = env.str('CELERY_BROKER_URL', 'redis://127.0.0.1:6379/0')
 CELERY_RESULT_BACKEND = env.str('CELERY_RESULT_BACKEND', 'redis://127.0.0.1:6379/0')
 
+NOTIFICATION_SEND_TASK_INTERVAL = env.int('NOTIFICATION_SEND_TASK_INTERVAL', 60)
+
 CELERY_BEAT_SCHEDULE = {}
+
+if NOTIFICATION_SEND_TASK_INTERVAL:
+    CELERY_BEAT_SCHEDULE['Send notifications task'] = {
+        'task': 'app_habits.tasks.send_habit_notifications',
+        'schedule': timedelta(seconds=NOTIFICATION_SEND_TASK_INTERVAL),
+    }
 
 TELEGRAM_POLL_INTERVAL = env.int('TELEGRAM_POLL_INTERVAL', 10)
 # if TELEGRAM_USE_POLL:
@@ -163,4 +209,7 @@ TELEGRAM_POLL_INTERVAL = env.int('TELEGRAM_POLL_INTERVAL', 10)
 #         'schedule': timedelta(seconds=TELEGRAM_POLL_INTERVAL),
 #     }
 
+MAX_OAUTH_TIMEOUT = env.int('MAX_OAUTH_TIMEOUT', 86400)
 
+LOGOUT_REDIRECT_URL = reverse_lazy('login')
+LOGIN_REDIRECT_URL = '/'

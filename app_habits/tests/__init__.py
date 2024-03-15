@@ -1,0 +1,2 @@
+from .habit_tests import HabitTestCase
+from .habit_notification_tests import HabitNotificationTestCase

@@ -1,14 +1,9 @@
 from django.contrib.auth.models import User
+from django.core.validators import MinValueValidator, MaxValueValidator
 from django.db import models
 
 
 class Habit(models.Model):
-    class PeriodicChoice(models.IntegerChoices):
-        hourly = 0, 'Почасовая'
-        daily = 1, 'Ежедневно'
-        weekly = 2, 'Еженедельно'
-        monthly = 3, 'Ежемесячно'
-
     time = models.TimeField(
         verbose_name='Время',
     )
@@ -42,9 +37,12 @@ class Habit(models.Model):
     )
 
     periodic = models.SmallIntegerField(
-        choices=PeriodicChoice.choices,
-        default=PeriodicChoice.daily,
-        verbose_name='Частота повторения'
+        default=1,
+        validators=[
+            MinValueValidator(1),
+            MaxValueValidator(7)
+        ],
+        verbose_name='Периодичность в днях'
     )
 
     reward = models.CharField(

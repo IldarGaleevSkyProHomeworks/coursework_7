@@ -3,7 +3,7 @@ from django.contrib.auth.hashers import check_password
 from django.contrib.auth.models import User
 from django.db import IntegrityError
 from telebot.handler_backends import State, StatesGroup
-from telebot.types import Message
+from telebot.types import Message, BotCommand
 
 from app_telegrambot.models import TelegramUser
 
@@ -79,6 +79,11 @@ def init_cmd(bot: telebot.TeleBot):
             message_id=message.id
         )
 
+        bot.delete_state(
+            user_id=uid,
+            chat_id=cid
+        )
+
         user: User = User.objects.filter(username=login).first()
 
         if not (user and check_password(password, user.password)):
@@ -101,3 +106,8 @@ def init_cmd(bot: telebot.TeleBot):
             user.save()
 
         bot.send_message(uid, f'Аккаунт успешно привязан')
+
+    return BotCommand(
+        command='link',
+        description='Привязать текущий Telegram-аккаунт к аккаунту на сайте'
+    )

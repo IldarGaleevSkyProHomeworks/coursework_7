@@ -16,8 +16,19 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path, include
+from django.views.generic import TemplateView
+
+from config.yasg import schema_view
 
 urlpatterns = [
-    path("admin/", admin.site.urls),
-    path("telegram/", include("app_telegrambot.urls", namespace="telegram-bot")),
+    path('', TemplateView.as_view(template_name='common/home.html')),
+
+    path('admin/', admin.site.urls),
+    path('accounts/', include('app_accounts.urls', namespace='accounts')),
+    path('telegram/', include('app_telegrambot.urls', namespace='telegram-bot')),
+    path('socialauth/', include('app_social_auth.urls', namespace='social-auth')),
+    path('api/', include('app_habits.urls', namespace='api')),
+
+    path('docs/', schema_view.with_ui('swagger', cache_timeout=0), name='schema-swagger-ui'),
+    path('redoc/', schema_view.with_ui('redoc', cache_timeout=0), name='schema-redoc'),
 ]
