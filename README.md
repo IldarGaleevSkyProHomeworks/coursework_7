@@ -1,5 +1,19 @@
 # Coursework 7
 
+## Kickstart
+
+```bash
+git clone https://github.com/IldarGaleevSkyProHomeworks/coursework_7.git
+cd coursework_7
+poetry install
+cp .env.template .env
+code .env
+```
+```bash
+poetry shell
+python manage.py migrate
+```
+
 ## Переменные окружения
 
 Шаблон файла `.env` - [.env.template](./.env.template)
