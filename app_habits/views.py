@@ -2,7 +2,7 @@ from django.db.models import Q
 from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework import viewsets
 from rest_framework.filters import OrderingFilter, SearchFilter
-from rest_framework.permissions import IsAuthenticated
+from rest_framework.permissions import IsAuthenticated, IsAdminUser
 
 from app_accounts.permissions import IsOwner
 from app_habits.models import Habit, HabitNotification
@@ -13,7 +13,7 @@ from app_habits.serializers.habit_notification_serializer import HabitNotificati
 
 class HabitViewSet(viewsets.ModelViewSet):
     serializer_class = HabitPublicSerializer
-    permission_classes = [IsAuthenticated, IsOwner]
+    permission_classes = [IsAuthenticated, IsOwner | IsAdminUser]
 
     filter_backends = (DjangoFilterBackend, OrderingFilter, SearchFilter)
     filterset_fields = ('is_pleasantly', 'periodic')
@@ -36,7 +36,7 @@ class HabitViewSet(viewsets.ModelViewSet):
 
 class HabitNotificationViewSet(viewsets.ModelViewSet):
     serializer_class = HabitNotificationSerializer
-    permission_classes = [IsAuthenticated, IsOwner]
+    permission_classes = [IsAuthenticated, IsOwner | IsAdminUser]
 
     def get_queryset(self):
         is_swagger = getattr(self, 'swagger_fake_view', False)
