@@ -122,3 +122,30 @@ python manage.py migrate
        ```powershell
        python .\manage.py grantrights -u --username yourUsername 
        ```
+
+## Создание уведомлений
+
+По пути `/api/habits` создать `POST` запросом привычку
+
+По пути `/api/habits/{id}/start/` отправить `POST` запрос с json, 
+содержащим информацию о часовом поясе вида `Europe/Moscow` в поле `timezone`, чтобы подписаться на уведомления. При успешной подписке придет уведомление.
+
+По пути `/api/habits/{id}/start/` отправить `DELETE` запрос, 
+чтобы отписаться от уведомлений. При успешной отписке придет уведомление.
+
+### Для работы приложения необходимо запустить:
+
+Менеджер задач:
+```powershell
+celery -A config worker -l INFO -P eventlet
+```
+
+Планировщик:
+```powershell
+celery -A config beat -l INFO -S django
+```
+
+Django сервер
+```powershell
+python .\manage.py runserver
+```
