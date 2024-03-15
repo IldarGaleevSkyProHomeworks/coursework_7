@@ -123,9 +123,13 @@ WSGI_APPLICATION = "config.wsgi.application"
 # https://docs.djangoproject.com/en/4.2/ref/settings/#databases
 
 DATABASES = {
-    "default": {
-        "ENGINE": "django.db.backends.sqlite3",
-        "NAME": BASE_DIR / "db.sqlite3",
+    'default': {
+        "ENGINE": env.str("DB_ENGINE", "django.db.backends.postgresql_psycopg2"),
+        "NAME": env.str("DB_NAME", "coursework_7"),
+        "USER": env.str("DB_USER", "postgres"),
+        "PASSWORD": env.str("DB_PASSWORD", ""),
+        "HOST": env.str("DB_HOST", "localhost"),
+        "PORT": env.int("DB_PORT", 5432),
     }
 }
 

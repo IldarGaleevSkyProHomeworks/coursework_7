@@ -1,6 +1,7 @@
 # Coursework 7
 
 ## Переменные окружения
+
 Шаблон файла `.env` - [.env.template](./.env.template)
 
 | Переменная                        | Описание                                                                                             |
@@ -20,6 +21,12 @@
 | `CELERY_RESULT_BACKEND`           | Строка подключения к брокеру сообщений                                                               |
 | `NOTIFICATION_SEND_TASK_INTERVAL` | Интервал (сек.) для задачи отправки уведомлений. Задайте `0` чтобы отключить.                        |
 | `MAX_OAUTH_TIMEOUT`               | Время жизни токена OAuth                                                                             |
+| `DB_ENGINE`                       | Провайдер базы данных                                                                                |
+| `DB_NAME`                         |                                                                                                      |
+| `DB_USER`                         |                                                                                                      |
+| `DB_PASSWORD`                     |                                                                                                      |
+| `DB_HOST`                         |                                                                                                      |
+| `DB_PORT`                         |                                                                                                      |
 
 ## Команды Django
 
