@@ -144,8 +144,7 @@ class HabitTestCase(TestCase):
             "site": "string",
             "action_description": "string",
             "is_pleasantly": True,
-            "periodic": 0,
-            "reward": "string",
+            "periodic": 1,
             "duration": 0,
             "is_public": True
         }
@@ -161,7 +160,7 @@ class HabitTestCase(TestCase):
             "site": "gnusnyy test",
             "action_description": "padla",
             "is_pleasantly": False,
-            "periodic": 0,
+            "periodic": 1,
             "duration": 0,
             "is_public": True
         }
@@ -177,7 +176,7 @@ class HabitTestCase(TestCase):
             "site": "string",
             "action_description": "string",
             "is_pleasantly": False,
-            "periodic": 0,
+            "periodic": 1,
             "duration": 0,
             "is_public": True
         }
@@ -193,7 +192,7 @@ class HabitTestCase(TestCase):
             "site": "string",
             "action_description": "string",
             "is_pleasantly": True,
-            "periodic": 0,
+            "periodic": 1,
             "duration": 0,
             "is_public": True
         }
@@ -208,9 +207,8 @@ class HabitTestCase(TestCase):
             "site": "string",
             "action_description": "string",
             "is_pleasantly": True,
-            "periodic": 0,
+            "periodic": 1,
             "duration": 500,
-            "reward": "string",
             "is_public": True
         }
 
@@ -218,20 +216,21 @@ class HabitTestCase(TestCase):
 
         self.assertEqual(result['duration'][0], 'Приятная привычка не должна длиться больше двух минут')
 
-    def test_create_validation_pleasantly_habit_non_set_reward_failed(self):
+    def test_create_validation_pleasantly_habit_set_reward_failed(self):
         data = {
             "time": "10:00",
             "site": "string",
             "action_description": "string",
             "is_pleasantly": True,
-            "periodic": 0,
+            "periodic": 1,
             "duration": 0,
+            "reward": "string",
             "is_public": True
         }
 
         _, result = self.check_create_habit(data, self.general_user_owner)
 
-        self.assertEqual(result['reward'][0], 'Укажите награду')
+        self.assertEqual(result['reward'][0], 'У приятной привычки не может быть награды')
 
     def test_create_validation_non_pleasantly_habit_reward_and_linked_habit_not_set_failed(self):
         data = {
@@ -239,7 +238,7 @@ class HabitTestCase(TestCase):
             "site": "string",
             "action_description": "string",
             "is_pleasantly": False,
-            "periodic": 0,
+            "periodic": 1,
             "duration": 0,
             "is_public": True
         }
@@ -256,7 +255,7 @@ class HabitTestCase(TestCase):
             "site": "string",
             "action_description": "string",
             "is_pleasantly": False,
-            "periodic": 0,
+            "periodic": 1,
             "duration": 0,
             "reward": "string",
             "is_public": True

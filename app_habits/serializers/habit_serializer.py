@@ -45,13 +45,15 @@ class HabitFullSerializer(serializers.ModelSerializer):
                 'linked_habit': 'У приятной привычки не может быть связанной привычки'
             })
 
+        if is_pleasantly and reward:
+            raise serializers.ValidationError({
+                'reward': 'У приятной привычки не может быть награды'
+            })
+
         if is_pleasantly and duration > 120:
             raise serializers.ValidationError({
                 'duration': 'Приятная привычка не должна длиться больше двух минут'
             })
-
-        if is_pleasantly and not (linked_habit or reward):
-            raise serializers.ValidationError({'reward': 'Укажите награду'})
 
         if not (is_pleasantly or reward):
             raise serializers.ValidationError({
