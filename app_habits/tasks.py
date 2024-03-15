@@ -1,41 +1,15 @@
-from datetime import datetime, timezone, timedelta
-
 from celery import shared_task
-from django.conf import settings
 
-from app_habits.models import HabitNotification
-from app_telegrambot import services
-
-
-def get_now():  # pragma: no cover
-    return datetime.now(timezone.utc)
+from app_habits.models import Habit
+from app_telegrambot import services, message_text
 
 
-@shared_task
-def send_habit_notifications():
-    notifications = (
-        HabitNotification.objects
-        .filter(
-            is_active=True,
-            owner__is_active=True,
-            owner__telegram_user__isnull=False,
+@shared_task(bind=True)
+def send_habit_notification(self, habit_id, telegram_user_id):
+    habit: Habit = Habit.objects.filter(pk=habit_id).first()
+
+    if habit:
+        services.send_text_message(
+            telegram_uid=telegram_user_id,
+            md_text=message_text.message_notifications(habit)
         )
-    )
-
-    now_utc = get_now()
-
-    for notification in notifications:
-
-        uid = notification.owner.telegram_user.telegram_user_id
-        target = notification.description
-
-        timezone_time = now_utc.astimezone(notification.timezone)
-        time_range_end = timezone_time + timedelta(seconds=settings.NOTIFICATION_SEND_TASK_INTERVAL)
-
-        habits = notification.habits.filter(time__gte=timezone_time, time__lt=time_range_end)
-
-        for habit in habits:
-            services.send_text_message(
-                telegram_uid=uid,
-                md_text=f'{target} - {habit.action_description}'
-            )
