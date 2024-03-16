@@ -63,3 +63,19 @@ def message_start_new_user() -> str:
 def message_start_existed_user(accounts: list[TelegramUser]) -> str:
     return (escape_markdown('Ой! А я вас знаю, вот ваши аккаунты:') + '\n' +
             '\n'.join([f'\\- `{escape_markdown(account.user.username)}`' for account in accounts]))
+
+
+def message_user_created() -> str:
+    return 'Пользователь успешно создан'
+
+
+def message_warning_user_exists() -> str:
+    return 'Пользователь с таким логином уже существует'
+
+
+def prompt_create_command_username(use_default_cmd, default_username) -> str:
+    return f'Логин \\(`{escape_markdown(default_username)}` \\- /{use_default_cmd} \\- чтобы использовать предложенный\\):' if default_username else 'Логин\\:'
+
+
+def prompt_create_command_password(gen_cmd) -> str:
+    return f'Введите пароль \\(/{gen_cmd} \\- чтобы сгенерировать\\):'
