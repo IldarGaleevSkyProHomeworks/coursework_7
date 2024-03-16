@@ -4,6 +4,7 @@ from django.conf import settings
 from telebot.formatting import escape_markdown
 
 from app_habits.models import Habit
+from app_telegrambot.models import TelegramUser
 
 
 def stack(*args):
@@ -51,3 +52,14 @@ def message_notifications(habit: Habit) -> str:
             f'{reward}'
             f'Продолжительность: *{timedelta(seconds=habit.duration)}*\n'
             f'Место: *{escape_markdown(habit.site)}*')
+
+
+def message_start_new_user() -> str:
+    return ('Давай знакомиться\\! Для этого вызови одну из комманд\\:\n\n'
+            '\\- \\/link \\- чтобы привязать существующий аккаунт\n'
+            '\\- \\/create \\- чтобы создать новый аккаунт\n')
+
+
+def message_start_existed_user(accounts: list[TelegramUser]) -> str:
+    return (escape_markdown('Ой! А я вас знаю, вот ваши аккаунты:') + '\n' +
+            '\n'.join([f'\\- `{escape_markdown(account.user.username)}`' for account in accounts]))
