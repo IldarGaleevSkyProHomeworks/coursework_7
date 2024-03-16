@@ -14,6 +14,7 @@ from app_telegrambot.bot_commands import (
     cancel_command,
     getjwt_command,
     genpass_command,
+    create_command,
 )
 from app_telegrambot.models import TelegramUser
 
@@ -26,6 +27,7 @@ commands = [
     start_command.init_cmd(bot),
     getjwt_command.init_cmd(bot),
     genpass_command.init_cmd(bot),
+    create_command.init_cmd(bot),
 ]
 
 bot.set_my_commands(
