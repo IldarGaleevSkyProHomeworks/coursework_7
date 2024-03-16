@@ -64,5 +64,3 @@ class Habit(models.Model):
 
     def __str__(self):
         return f'{"Приятная" if self.is_pleasantly else "Неприятная"} привычка {self.action_description}'
-
-

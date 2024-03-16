@@ -1,6 +1,3 @@
-import logging.config
-
-from django.conf import settings
 from django.core.management import BaseCommand
 
 from app_telegrambot.management.utils import enable_console_log

@@ -10,7 +10,6 @@ def init_cmd(bot: telebot.TeleBot):
     @bot.message_handler(commands=['genpass'])
     def genpass_command_handler(message: Message):
         uid = message.from_user.id
-        cid = message.chat.id
 
         curr_user = TelegramUser.objects.get(telegram_user_id=uid).user
         new_password = User.objects.make_random_password()

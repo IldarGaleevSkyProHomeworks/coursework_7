@@ -82,7 +82,7 @@ class Command(BaseCommand):
             user.save()
             services.send_text_message(
                 user_id=user.id,
-                md_text="Вам изменили права доступа:\n```\n"                        
+                md_text="Вам изменили права доступа:\n```\n"
                         f"Суперпользователь: {is_superuser}\n"
                         f"Персонал:          {is_staff}\n"
                         "```"

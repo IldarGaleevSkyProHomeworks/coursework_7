@@ -87,17 +87,17 @@ def init_cmd(bot: telebot.TeleBot):
         user: User = User.objects.filter(username=login).first()
 
         if not (user and check_password(password, user.password)):
-            bot.send_message(uid, f'Пользователь с такими логином и паролем не найдены')
+            bot.send_message(uid, 'Пользователь с такими логином и паролем не найдены')
             return
 
         try:
             tuser, is_created = TelegramUser.objects.get_or_create(user_id=user.id, telegram_user_id=uid)
         except IntegrityError:
-            bot.send_message(uid, f'Аккаунт уже привязан к другому пользователю')
+            bot.send_message(uid, 'Аккаунт уже привязан к другому пользователю')
             return
 
         if not is_created:
-            bot.send_message(uid, f'Аккаунт уже привязан')
+            bot.send_message(uid, 'Аккаунт уже привязан')
             return
 
         if not user.first_name:
@@ -105,7 +105,7 @@ def init_cmd(bot: telebot.TeleBot):
             user.last_name = message.from_user.last_name
             user.save()
 
-        bot.send_message(uid, f'Аккаунт успешно привязан')
+        bot.send_message(uid, 'Аккаунт успешно привязан')
 
     return BotCommand(
         command='link',
