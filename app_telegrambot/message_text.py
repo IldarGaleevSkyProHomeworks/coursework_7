@@ -15,13 +15,13 @@ def message_welcome() -> str:
     url = escape_markdown(f'{settings.APPLICATION_SCHEME}://{settings.APPLICATION_HOSTNAME}')
     return (f"Вы зарегистрировались на сайте "
             f"[{escape_markdown(settings.APPLICATION_HOSTNAME)}]"
-            f"({url})")
+            f"({escape_markdown(url)})")
 
 
 def message_user_credentials(username, password) -> str:
     return (f"Для входа используйте:\n"
-            f">Логин: `{username}`\n"
-            f">Пароль: ||{password}||")
+            f">Логин: `{escape_markdown(username)}`\n"
+            f">Пароль: ||{escape_markdown(password)}||")
 
 
 def message_login() -> str:
