@@ -1,9 +1,5 @@
 import telebot
-from celery.utils.saferepr import chars_t
-from django.contrib.auth.hashers import check_password
 from django.contrib.auth.models import User
-from django.db import IntegrityError
-from telebot.formatting import escape_markdown
 from telebot.handler_backends import State, StatesGroup
 from telebot.types import Message, BotCommand
 
@@ -186,5 +182,5 @@ def init_cmd(bot: telebot.TeleBot):
 
     return BotCommand(
         command=cmd_name,
-        description='Привязать текущий Telegram-аккаунт к аккаунту на сайте'
+        description='Создать аккаунт на сайте'
     )
