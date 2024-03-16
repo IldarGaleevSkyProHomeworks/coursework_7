@@ -55,7 +55,7 @@ class HabitFullSerializer(serializers.ModelSerializer):
                 'duration': 'Приятная привычка не должна длиться больше двух минут'
             })
 
-        if not (is_pleasantly or reward):
+        if not (linked_habit or reward):
             raise serializers.ValidationError({
                 'linked_habit': 'Укажите награду или связанную привычку',
                 'reward': 'Укажите награду или связанную привычку',
