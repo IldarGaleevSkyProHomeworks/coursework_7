@@ -9,6 +9,7 @@ from drf_yasg.utils import swagger_auto_schema
 from rest_framework.decorators import api_view, permission_classes
 from rest_framework.permissions import AllowAny
 
+from app_accounts.utils import generate_password
 from app_social_auth.utils import check_telegram_data
 from app_telegrambot import tasks, message_text
 from app_telegrambot.models import TelegramUser
@@ -31,7 +32,7 @@ def telegram_login(request):
             )
             return redirect(settings.LOGIN_REDIRECT_URL)
 
-        password = User.objects.make_random_password()
+        password = generate_password()
         new_user: User = User.objects.create_user(
             username=data['username'] if data.get('username') else f'user_{data["id"]}',
             password=password
