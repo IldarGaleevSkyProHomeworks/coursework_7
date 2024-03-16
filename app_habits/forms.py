@@ -1,5 +1,4 @@
 from django import forms
-from django.db.models import Q
 
 from app_habits.models import Habit
 

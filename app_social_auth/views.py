@@ -58,8 +58,7 @@ def telegram_login(request):
         )
 
         return redirect(settings.LOGIN_REDIRECT_URL)
-    except (TimeoutError, ValueError) as e:
+    except (TimeoutError, ValueError):
         return redirect(reverse_lazy('login'))
-        # return Response({'success': False, 'error': str(e)}, status.HTTP_401_UNAUTHORIZED)
     except Exception as e:
         logger.exception(f'Telegram login error {e}')

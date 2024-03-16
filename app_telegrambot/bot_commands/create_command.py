@@ -167,7 +167,7 @@ def init_cmd(bot: telebot.TeleBot):
         )
 
     @bot.message_handler(state=CreateAccountState.password)
-    def create_account_command_password_gen_handler(message: Message):
+    def create_account_command_password_handler(message: Message):
         cid = message.chat.id
         tg_user = message.from_user
         user_msg_id = message.id

@@ -1,5 +1,4 @@
 import telebot
-from telebot.formatting import escape_markdown
 from telebot.types import Message, BotCommand
 
 from app_telegrambot import message_text

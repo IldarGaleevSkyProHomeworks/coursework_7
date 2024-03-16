@@ -74,7 +74,8 @@ def message_warning_user_exists() -> str:
 
 
 def prompt_create_command_username(use_default_cmd, default_username) -> str:
-    return f'Логин \\(`{escape_markdown(default_username)}` \\- /{use_default_cmd} \\- чтобы использовать предложенный\\):' if default_username else 'Логин\\:'
+    return (f'Логин \\(`{escape_markdown(default_username)}` \\- '
+            f'/{use_default_cmd} \\- чтобы использовать предложенный\\):') if default_username else 'Логин\\:'
 
 
 def prompt_create_command_password(gen_cmd) -> str:
