@@ -49,7 +49,7 @@ class UserViewSet(
                 self.permission_classes = (IsOwner | IsAdminUser,)
             case 'destroy':
                 self.permission_classes = (IsAdminUser,)
-            case _:
+            case _:  # pragma: no cover
                 pass
 
         return [permission() for permission in self.permission_classes]
@@ -57,7 +57,7 @@ class UserViewSet(
     def get_serializer_class(self):
         is_swagger = getattr(self, 'swagger_fake_view', False)
 
-        if is_swagger and self.action == 'create':
+        if is_swagger and self.action == 'create':  # pragma: no cover
             return UserSerializer
 
         if self.action in ('update', 'partial_update'):
