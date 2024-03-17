@@ -6,8 +6,11 @@ omit =
    manage.py
    config/*
    */migrations/*
+   */management/*
    */models/*
    app_telegrambot/bot_commands/*
+   app_social_auth/*
+   */tasks.py
    */__init__.py
    */admin.py
    */apps.py
