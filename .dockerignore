@@ -1,0 +1,9 @@
+/htmlcov/
+/.git/
+**/tests/
+**/tests.py
+*.md
+.coverage*
+*.sqlite3
+.env*
+.flake8
