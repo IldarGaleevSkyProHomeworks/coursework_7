@@ -148,3 +148,12 @@ Django сервер
 ```powershell
 python .\manage.py runserver
 ```
+
+# Docker
+
+Мнимимальная настройка для успешного развертывания контейнеров требует наличия файла
+`.env.docker` с указанными переменными:
+
+- `TELEGRAM_BOT_TOKEN` - токен для Telegram бота
+- `APPLICATION_HOSTNAME` - внешний адрес приложения. Используется для задания `ALLOWED_HOSTS`,`CORS_ALLOWED_ORIGINS`,`CSRF_TRUSTED_ORIGINS`
+- `APPLICATION_SCHEME` (не обязательно) - по умолчанию `https`, при локальном запуске обычно не требуется.
