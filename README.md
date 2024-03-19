@@ -33,7 +33,6 @@ python manage.py migrate
 | `CELERY_TASK_TIME_LIMIT`          |                                                                                                      |
 | `CELERY_BROKER_URL`               | Строка подключения к брокеру сообщений                                                               |
 | `CELERY_RESULT_BACKEND`           | Строка подключения к брокеру сообщений                                                               |
-| `NOTIFICATION_SEND_TASK_INTERVAL` | Интервал (сек.) для задачи отправки уведомлений. Задайте `0` чтобы отключить.                        |
 | `MAX_OAUTH_TIMEOUT`               | Время жизни токена OAuth                                                                             |
 | `DB_ENGINE`                       | Провайдер базы данных                                                                                |
 | `DB_NAME`                         |                                                                                                      |

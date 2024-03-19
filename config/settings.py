@@ -168,6 +168,8 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/4.2/howto/static-files/
 
 STATIC_URL = "static/"
+STATIC_ROOT = BASE_DIR / "static"
+
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.2/ref/settings/#default-auto-field
@@ -182,7 +184,7 @@ if APPLICATION_HOSTNAME:
     CSRF_TRUSTED_ORIGINS.append(f'{APPLICATION_SCHEME}://{APPLICATION_HOSTNAME}')
 
 TELEGRAM_USE_POLL = env.bool('TELEGRAM_USE_POLL', False)
-TELEGRAM_BOT_TOKEN = env.str('TELEGRAM_BOT_TOKEN')
+TELEGRAM_BOT_TOKEN = env.str('TELEGRAM_BOT_TOKEN', None)
 
 CELERY_TIMEZONE = TIME_ZONE
 
@@ -192,22 +194,9 @@ CELERY_TASK_TIME_LIMIT = env.int('CELERY_TASK_TIME_LIMIT', 60 * 30)
 CELERY_BROKER_URL = env.str('CELERY_BROKER_URL', 'redis://127.0.0.1:6379/0')
 CELERY_RESULT_BACKEND = env.str('CELERY_RESULT_BACKEND', 'redis://127.0.0.1:6379/0')
 
-NOTIFICATION_SEND_TASK_INTERVAL = env.int('NOTIFICATION_SEND_TASK_INTERVAL', 60)
-
 CELERY_BEAT_SCHEDULE = {}
 
-if NOTIFICATION_SEND_TASK_INTERVAL:
-    CELERY_BEAT_SCHEDULE['Send notifications task'] = {
-        'task': 'app_habits.tasks.send_habit_notifications',
-        'schedule': timedelta(seconds=NOTIFICATION_SEND_TASK_INTERVAL),
-    }
-
 TELEGRAM_POLL_INTERVAL = env.int('TELEGRAM_POLL_INTERVAL', 10)
-# if TELEGRAM_USE_POLL:
-#     CELERY_BEAT_SCHEDULE['Telegram updates poll'] = {
-#         'task': 'app_telegrambot.tasks.telegram_poll_task',
-#         'schedule': timedelta(seconds=TELEGRAM_POLL_INTERVAL),
-#     }
 
 MAX_OAUTH_TIMEOUT = env.int('MAX_OAUTH_TIMEOUT', 86400)
 

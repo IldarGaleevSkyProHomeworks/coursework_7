@@ -1,0 +1,91 @@
+version: "3.8"
+
+
+x-django-app-env: &django-app-env
+  env_file:
+    - .env.docker
+  environment:
+     DEBUG: True
+     DB_HOST: "postgres"
+     DB_USER: "postgres"
+     DB_NAME: "postgres"
+     DB_PASSWORD: "postgres"
+     CELERY_BROKER_URL: "redis://redis:6379/0"
+     CELERY_RESULT_BACKEND: "redis://redis:6379/0"
+     TELEGRAM_USE_POLL: True
+
+
+services:
+  web:
+    depends_on:
+      - postgres
+      - redis
+    build: .
+
+    <<: *django-app-env
+
+    command: python manage.py runserver --noreload 0.0.0.0:80
+
+    ports:
+      - "8080:80"
+    networks:
+      - net_lan
+
+  celery:
+    depends_on:
+      - postgres
+      - redis
+    build: .
+    networks:
+      - net_lan
+
+    <<: *django-app-env
+    command: celery -A config worker -l INFO
+
+
+  celery-beat:
+    depends_on:
+      - postgres
+      - redis
+    build: .
+    networks:
+      - net_lan
+
+    <<: *django-app-env
+    command: celery -A config beat -l INFO -S django
+
+
+  telegram-poll:
+    depends_on:
+      - postgres
+      - redis
+    build: .
+    networks:
+      - net_lan
+
+    <<: *django-app-env
+    command: python manage.py telegrampoll
+
+  postgres:
+    image: postgres:alpine3.19
+    environment:
+      POSTGRES_USER: "postgres"
+      POSTGRES_PASSWORD: "postgres"
+      POSTGRES_DB: "postgres"
+
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    networks:
+      - net_lan
+
+  redis:
+    image: redis:alpine3.19
+    networks:
+      - net_lan
+
+volumes:
+  postgres_data:
+
+networks:
+  net_lan:
+    driver: bridge
