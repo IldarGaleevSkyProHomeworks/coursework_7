@@ -13,7 +13,7 @@ x-django-app-env: &django-app-env
      CELERY_BROKER_URL: "redis://redis:6379/0"
      CELERY_RESULT_BACKEND: "redis://redis:6379/0"
      TELEGRAM_USE_POLL: True
-
+  restart: always
 
 services:
   web:
@@ -72,6 +72,7 @@ services:
       POSTGRES_USER: "postgres"
       POSTGRES_PASSWORD: "postgres"
       POSTGRES_DB: "postgres"
+    restart: always
 
     volumes:
       - postgres_data:/var/lib/postgresql/data
@@ -80,6 +81,7 @@ services:
 
   redis:
     image: redis:alpine3.19
+    restart: always
     networks:
       - net_lan
 
